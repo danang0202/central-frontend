@@ -127,6 +127,10 @@ const loaders = new Map()
     /* webpackChunkName: "component-home" */
     '../components/home.vue'
   )))
+  .set('LandingPage', loader(() => import(
+    /* webpackChunkName: "component-home" */
+    '../components/landing.vue'
+  )))
   .set('HomeConfigSection', loader(() => import(
     /* webpackChunkName: "component-home-config-section" */
     '../components/home/config-section.vue'
