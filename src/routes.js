@@ -520,7 +520,7 @@ export default (container) => {
       ]
     }),
     asyncRoute({
-      path: '/projects/:projectId([1-9]\\d*)/forms/:xmlFormId/submissions/:instanceId',
+      path: '/projects/:projectId([1-9]\\d*)/forms/:xmlFormId/submissions/:instanceId/test',
       component: 'SubmissionShow',
       props: true,
       loading: 'page',
