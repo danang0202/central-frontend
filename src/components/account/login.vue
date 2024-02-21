@@ -165,7 +165,7 @@ export default {
     submit() {
       if (!this.verifyNewSession()) return;
       const data = { email: this.email, password: this.password };
-      axios.post('http://localhost:8989/v1/sessions', data, {
+      axios.post('https://central.pkl63.stis.ac.id/v1/sessions', data, {
         headers: {
           'Content-Type': 'application/json'
         }

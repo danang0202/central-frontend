@@ -27,9 +27,9 @@ export default {
   computed: {
     url() {
       if (this.token && this.email) {
-        return `http://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}`;
+        return `https://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}`;
       } else {
-        return `http://pml.pkl63.stis.ac.id/login`;
+        return `https://pml.pkl63.stis.ac.id/login`;
       }
     }
   }
