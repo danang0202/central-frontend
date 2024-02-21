@@ -19,27 +19,25 @@ except according to the terms contained in the LICENSE file.
         <div v-if="config.oidcEnabled" class="panel-body">
           <p>{{ $t('oidc.body') }}</p>
           <div class="panel-footer">
-            <a :href="oidcLoginPath" class="btn btn-primary"
-              :class="{ disabled }" @click="loginByOIDC">
-              {{ $t('action.continue') }} <spinner :state="disabled"/>
+            <a :href="oidcLoginPath" class="btn btn-primary" :class="{ disabled }" @click="loginByOIDC">
+              {{ $t('action.continue') }}
+              <spinner :state="disabled" />
             </a>
           </div>
         </div>
         <div v-else class="panel-body">
           <form @submit.prevent="submit">
-            <form-group ref="email" v-model.trim="email" type="email"
-              :placeholder="$t('field.email')" required autocomplete="off"/>
-            <form-group v-model="password" type="password"
-              :placeholder="$t('field.password')" required
-              autocomplete="current-password"/>
+            <form-group ref="email" v-model.trim="email" type="email" :placeholder="$t('field.email')" required
+              autocomplete="off" />
+            <form-group v-model="password" type="password" :placeholder="$t('field.password')" required
+              autocomplete="current-password" />
             <div class="panel-footer">
-              <button type="submit" class="btn btn-primary"
-                :aria-disabled="disabled">
-                {{ $t('action.logIn') }} <spinner :state="disabled"/>
+              <button type="submit" class="btn btn-primary" :aria-disabled="disabled">
+                {{ $t('action.logIn') }}
+                <spinner :state="disabled" />
               </button>
               <router-link v-slot="{ navigate }" to="/reset-password" custom>
-                <button type="button" class="btn btn-link" :aria-disabled="disabled"
-                  @click="navigate">
+                <button type="button" class="btn btn-link" :aria-disabled="disabled" @click="navigate">
                   {{ $t('action.resetPassword') }}
                 </button>
               </router-link>
@@ -52,6 +50,7 @@ except according to the terms contained in the LICENSE file.
 </template>
 
 <script>
+import axios from 'axios';
 import FormGroup from '../form-group.vue';
 import Spinner from '../spinner.vue';
 
@@ -165,6 +164,23 @@ export default {
     },
     submit() {
       if (!this.verifyNewSession()) return;
+      const data = { email: this.email, password: this.password };
+      axios.post('http://localhost:8989/v1/sessions', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          this.responseData = response.data;
+          localStorage.setItem('token', this.responseData.token);
+          localStorage.setItem('csrf', this.responseData.csrf);
+          localStorage.setItem('expired', this.responseData.expiresAt);
+          localStorage.setItem('email', this.email);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
       this.disabled = true;
       this.session.request({
         method: 'POST',
@@ -178,10 +194,6 @@ export default {
           this.navigateToNext(
             this.$route.query.next,
             (location) => {
-              // We only set this.disabled to `false` before redirecting within
-              // Frontend. If we also set this.disabled before redirecting
-              // outside Frontend, the buttons might be re-enabled before the
-              // external page is loaded.
               this.disabled = false;
               const message = this.$t('alert.changePassword');
               this.$router.replace(location)

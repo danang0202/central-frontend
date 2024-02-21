@@ -50,9 +50,6 @@ export default {
   },
   computed: {
     routerReady() {
-      if(this.$route.path === '/' || this.$route.path.startsWith() === '/pml'){
-        return false;
-      }
       return this.$route !== START_LOCATION;
     }
   },

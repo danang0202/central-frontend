@@ -1,12 +1,10 @@
 <template>
   <div class="container-fluid">
-    <h1>Test</h1>
-    <div v-if="loading" class="loading-indicator">Loading...</div>
+    <h1><a :href="url">GO TO WEB PML</a></h1>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
   name: 'LandingPage',
   props: {
@@ -17,26 +15,23 @@ export default {
   },
   data() {
     return {
-      message: "Kelas ga zein?"
+      token: '',
+      email: ''
     };
   },
-  mounted() {
-    const email = "222111975@stis.ac.id";
-    const data = { email };
-    axios.post('https://capi.pkl63.stis.ac.id/get-data-tim', data, {
-      headers: {
-        'Content-Type': 'application/json'
+  async mounted() {
+    this.token = await localStorage.getItem('token');
+    this.email = await localStorage.getItem('email');
+    console.log(this.token, this.email);
+  },
+  computed: {
+    url() {
+      if (this.token && this.email) {
+        return `http://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}`;
+      } else {
+        return `http://pml.pkl63.stis.ac.id/login`;
       }
-    })
-      .then(response => {
-        console.log(response.data);
-        // Tangani respon dari API
-        this.responseData = response.data;
-      })
-      .catch(error => {
-        // Tangani kesalahan jika panggilan gagal
-        console.error('Error fetching data:', error);
-      });
+    }
   }
 };
 </script>
