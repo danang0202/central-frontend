@@ -16,6 +16,7 @@ import AsyncRoute from './components/async-route.vue';
 // import PmlLayout from './components/pml-layout.vue'
 import { routeProps } from './util/router';
 import LandingPage from './components/landing.vue';
+import LogoutPage from './components/logout.vue';
 
 export default (container) => {
   /* eslint-disable indent */ // TODO/vue3
@@ -227,7 +228,15 @@ export default (container) => {
       component: LandingPage,
       meta: {
         requireLogin: true,
-        title: () => [i18n.t('action.logIn')]
+        title: () => ["PML | Dashboard"]
+      }
+    },
+    {
+      path: '/logout',
+      component: LogoutPage,
+      meta: {
+        requireLogin: true,
+        title: () => ["PML | Log Out"]
       }
     },
     ...conditionalRoutes(!config.oidcEnabled, [

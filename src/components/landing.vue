@@ -16,18 +16,20 @@ export default {
   data() {
     return {
       token: '',
-      email: ''
+      email: '',
+      expiresAt: '',
     };
   },
   async mounted() {
     this.token = await localStorage.getItem('token');
     this.email = await localStorage.getItem('email');
-    console.log(this.token, this.email);
+    this.expiresAt = await localStorage.getItem('expired');
+    console.log(this.token, this.email, this.expiresAt);
   },
   computed: {
     url() {
       if (this.token && this.email) {
-        return `https://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}`;
+        return `https://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}/${this.expiresAt}`;
       } else {
         return `https://pml.pkl63.stis.ac.id/login`;
       }

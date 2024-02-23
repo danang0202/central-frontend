@@ -37,9 +37,9 @@ except according to the terms contained in the LICENSE file.
                 <spinner :state="disabled" />
               </button>
               <router-link v-slot="{ navigate }" to="/reset-password" custom>
-                <button type="button" class="btn btn-link" :aria-disabled="disabled" @click="navigate">
+                <!-- <button type="button" class="btn btn-link" :aria-disabled="disabled" @click="navigate">
                   {{ $t('action.resetPassword') }}
-                </button>
+                </button> -->
               </router-link>
             </div>
           </form>
@@ -174,7 +174,7 @@ export default {
           this.responseData = response.data;
           localStorage.setItem('token', this.responseData.token);
           localStorage.setItem('csrf', this.responseData.csrf);
-          localStorage.setItem('expired', this.responseData.expiresAt);
+          localStorage.setItem('expired', Date.parse(session.expiresAt).toString());
           localStorage.setItem('email', this.email);
         })
         .catch(error => {
