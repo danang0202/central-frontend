@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid">
-    <h1><a :href="url">GO TO WEB PML</a></h1>
+  <div class="container-fluid box">
+    <h1>LOADING</h1>
   </div>
 </template>
 
@@ -26,16 +26,19 @@ export default {
     this.token = await localStorage.getItem('token');
     this.email = await localStorage.getItem('email');
     this.expiresAt = await localStorage.getItem('expired');
+    setTimeout(() => {
+      window.location.href = `${urlPml}/login/${this.token}/${this.email}/${this.expiresAt}`;
+    }, 1500);
   },
-  computed: {
-    url() {
-      if (this.token && this.email) {
-        return `${urlPml}/login/${this.token}/${this.email}/${this.expiresAt}`;
-      } else {
-        return `${urlPml}/login`;
-      }
-    }
-  }
+  // computed: {
+  //   url() {
+  //     if (this.token && this.email) {
+  //       return `${urlPml}/login/${this.token}/${this.email}/${this.expiresAt}`;
+  //     } else {
+  //       return `${urlPml}/login`;
+  //     }
+  //   }
+  // }
 };
 </script>
 
@@ -47,5 +50,13 @@ export default {
 
 .loading-indicator {
   margin-top: 20px;
+}
+
+.box{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
 }
 </style>
