@@ -30,7 +30,7 @@ export default {
   computed: {
     url() {
       if (this.token && this.email) {
-        return `${urlPml}/${this.token}/${this.email}/${this.expiresAt}`;
+        return `${urlPml}/login/${this.token}/${this.email}/${this.expiresAt}`;
       } else {
         return `${urlPml}/login`;
       }
