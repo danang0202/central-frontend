@@ -24,7 +24,6 @@ export default {
     this.token = await localStorage.getItem('token');
     this.email = await localStorage.getItem('email');
     this.expiresAt = await localStorage.getItem('expired');
-    console.log(this.token, this.email, this.expiresAt);
   },
   computed: {
     url() {
