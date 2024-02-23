@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { urlPml } from '../request-data/path-url';
+
 export default {
   name: 'LandingPage',
   props: {
@@ -28,9 +30,9 @@ export default {
   computed: {
     url() {
       if (this.token && this.email) {
-        return `https://pml.pkl63.stis.ac.id/login/${this.token}/${this.email}/${this.expiresAt}`;
+        return `${urlPml}/${this.token}/${this.email}/${this.expiresAt}`;
       } else {
-        return `https://pml.pkl63.stis.ac.id/login`;
+        return `${urlPml}/login`;
       }
     }
   }

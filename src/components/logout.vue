@@ -19,7 +19,7 @@ export default {
                 })
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 1500);
         } catch (error) {
             console.error('Error while fetching token:', error);
         }

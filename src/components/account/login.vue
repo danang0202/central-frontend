@@ -36,11 +36,11 @@ except according to the terms contained in the LICENSE file.
                 {{ $t('action.logIn') }}
                 <spinner :state="disabled" />
               </button>
-              <router-link v-slot="{ navigate }" to="/reset-password" custom>
+              <!-- <router-link v-slot="{ navigate }" to="/reset-password" custom>
                 <button type="button" class="btn btn-link" :aria-disabled="disabled" @click="navigate">
                   {{ $t('action.resetPassword') }}
                 </button>
-              </router-link>
+              </router-link> -->
             </div>
           </form>
         </div>
@@ -158,9 +158,10 @@ export default {
       if (url.origin !== window.location.origin || url.pathname === '/login')
         return internal('/');
 
-      if (url.pathname.startsWith(`${enketoBasePath}/`))
-        return external(url.href);
-      return internal(url.pathname + url.search + url.hash);
+      // if (url.pathname.startsWith(`${enketoBasePath}/`))
+      //   return external(url.href);
+      // return internal(url.pathname + url.search + url.hash);
+      return internal('/');
     },
     submit() {
       if (!this.verifyNewSession()) return;
@@ -190,26 +191,26 @@ export default {
           (code === 401.2 ? this.$t('problem.401_2') : null)
       })
         .then(() => logIn(this.container, true))
-      .then(() => {
-        this.navigateToNext(
-          this.$route.query.next,
-          (location) => {
-            this.disabled = false;
-            const message = this.$t('alert.changePassword');
-            this.$router.replace(location)
-              .catch(noop)
-              .then(() => {
-                if (this.password.length < 10) this.alert.info(message);
-              });
-          },
-          (url) => {
-            // window.location.replace('/');
-          }
-        );
-      })
-      .catch(() => {
-        this.disabled = false;
-      });
+        .then(() => {
+          this.navigateToNext(
+            this.$route.query.next,
+            (location) => {
+              this.disabled = false;
+              const message = this.$t('alert.changePassword');
+              this.$router.replace(location)
+                .catch(noop)
+                .then(() => {
+                  if (this.password.length < 10) this.alert.info(message);
+                });
+            },
+            (url) => {
+              window.location.replace('/');
+            }
+          );
+        })
+        .catch(() => {
+          this.disabled = false;
+        });
     }
   }
 };

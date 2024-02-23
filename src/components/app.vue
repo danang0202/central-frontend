@@ -18,7 +18,7 @@ except according to the terms contained in the LICENSE file.
     <!-- Specifying .capture so that an alert is not hidden immediately if it
     was shown after the click. -->
     <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
-    <div class="" @click.capture="hideAlertAfterClick">
+    <div class="container-fluid" @click.capture="hideAlertAfterClick">
       <router-view />
     </div>
     <div id="tooltips"></div>
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     routerReady() {
-      if (this.$route.path == '/' || this.$route.path == '/login' || this.$route.path == '/logout') {
+      if (this.$route.path == '/' || this.$route.path == '/login' || this.$route.path == '/logout' || /^\/projects\/[^/]+\/forms\/[^/]+\/submissions\/[^/]+$/.test(this.$route.path)) {
         return false;
       } else {
         return this.$route !== START_LOCATION;
