@@ -69,4 +69,8 @@ defineExpose({ focus });
     display: none;
   }
 }
+
+input{
+  width: 30rem !important;
+}
 </style>
