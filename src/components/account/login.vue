@@ -317,6 +317,13 @@ export default {
   opacity: .8;
   background-image: linear-gradient(to right, #f58020 25%, #fbac1b 80%);
 }
+
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .right {
+    display: none;
+  }
+}
 </style>
 
 <i18n lang="json5">
