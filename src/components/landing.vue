@@ -36,7 +36,7 @@ export default {
     this.expiresAt = await localStorage.getItem('expired');
     setTimeout(() => {
       window.location.href = `${urlPml}/login/${this.token}/${this.email}/${this.expiresAt}`;
-      // window.location.href = 'http://localhost:5173/login/AMYLgQeFdM8kNpXJq$ImgaN4kpJl8yhhmLWXN2x$Fgi52SbwKdczjwwUfTwH8LfE/222112322@stis.ac.id/1709016495717'
+      // window.location.href = 'http://localhost:5173/login/eRAGj3Hjeg64ZlUubIdwrdiw9jgv9G9QuB4DSUFKI1NFvvQFqq7Qq8flzwUhvE!K/222112322@stis.ac.id/1709016495717'
     }, 1500);
   },
   // computed: {
