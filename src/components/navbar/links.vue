@@ -16,17 +16,18 @@ except according to the terms contained in the LICENSE file.
         {{ $t('resource.projects') }} <span class="sr-only">{{ $t('current') }}</span>
       </router-link>
     </li>
-    <li v-if="canRoute('/users')" id="navbar-links-users"
-      :class="{ active: routePathStartsWith('/users') }">
+    <li v-if="canRoute('/users')" id="navbar-links-users" :class="{ active: routePathStartsWith('/users') }">
       <router-link to="/users">
         {{ $t('resource.users') }} <span class="sr-only">{{ $t('current') }}</span>
       </router-link>
     </li>
-    <li v-if="canRoute('/system/audits')"
-      :class="{ active: routePathStartsWith('/system') }">
+    <li v-if="canRoute('/system/audits')" :class="{ active: routePathStartsWith('/system') }">
       <router-link to="/system/audits">
         {{ $t('common.system') }} <span class="sr-only">{{ $t('current') }}</span>
       </router-link>
+    </li>
+    <li>
+      <a href="http://localhost:5173/webmon/">Back To Monitoring</a>
     </li>
   </ul>
 </template>
@@ -56,16 +57,26 @@ export default {
 
 <style lang="scss">
 #navbar-links {
-  .sr-only { display: none; }
-  .active .sr-only { display: block; }
+  .sr-only {
+    display: none;
+  }
+
+  .active .sr-only {
+    display: block;
+  }
 }
 
 @media (min-width: 768px) {
   #navbar-links {
     margin-left: 30px;
 
-    > li + li { margin-left: 10px; }
-    #navbar-links-users { margin-left: 40px; }
+    >li+li {
+      margin-left: 10px;
+    }
+
+    #navbar-links-users {
+      margin-left: 40px;
+    }
   }
 }
 </style>

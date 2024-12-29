@@ -34,7 +34,7 @@ except according to the terms contained in the LICENSE file.
             <ul class="nav navbar-nav">
               <navbar-help-dropdown/>
               <navbar-locale-dropdown/>
-              <navbar-actions :logged-in="loggedIn"/>
+              <!-- <navbar-actions :logged-in="loggedIn"/> -->
             </ul>
           </div>
         </div>
