@@ -13,8 +13,10 @@ import { always, equals } from 'ramda';
 
 import AccountLogin from './components/account/login.vue';
 import AsyncRoute from './components/async-route.vue';
-
+// import PmlLayout from './components/pml-layout.vue'
 import { routeProps } from './util/router';
+import LandingPage from './components/landing.vue';
+import LogoutPage from './components/logout.vue';
 
 export default (container) => {
   /* eslint-disable indent */ // TODO/vue3
@@ -690,6 +692,8 @@ export default (container) => {
       }
     })
   ];
+
+
 
 
 

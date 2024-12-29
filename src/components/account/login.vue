@@ -10,41 +10,52 @@ including this file, may be copied, modified, propagated, or distributed
 except according to the terms contained in the LICENSE file.
 -->
 <template>
-  <div id="account-login" class="row">
-    <div class="col-xs-12 col-sm-offset-3 col-sm-6">
-      <div class="panel panel-default panel-main">
-        <div class="panel-heading">
-          <h1 class="panel-title">{{ $t('action.logIn') }}</h1>
-        </div>
-        <div v-if="config.oidcEnabled" class="panel-body">
-          <p>{{ $t('oidc.body') }}</p>
-          <div class="panel-footer">
-            <a :href="oidcLoginPath" class="btn btn-primary"
-              :class="{ disabled }" @click="loginByOIDC">
-              {{ $t('action.continue') }} <spinner :state="disabled"/>
-            </a>
+  <div id="account-login" class="row container-login">
+    <div class="">
+      <div class="inner-container shadow">
+        <div class="left">
+          <div class="header">
+            <img src="../../assets/images/logo.svg" class="logo-pkl" alt="">
+            <h1 class="panel-title">Selamat Datang PML</h1>
+            <h6>Silahakan login dengan akun PML anda !</h6>
           </div>
-        </div>
-        <div v-else class="panel-body">
-          <form @submit.prevent="submit">
-            <form-group ref="email" v-model.trim="email" type="email"
-              :placeholder="$t('field.email')" required autocomplete="off"/>
-            <form-group v-model="password" type="password"
-              :placeholder="$t('field.password')" required
-              autocomplete="current-password"/>
+          <div v-if="config.oidcEnabled" class="panel-body">
+            <p>{{ $t('oidc.body') }}</p>
             <div class="panel-footer">
-              <button type="submit" class="btn btn-primary"
-                :aria-disabled="disabled">
-                {{ $t('action.logIn') }} <spinner :state="disabled"/>
-              </button>
-              <router-link v-slot="{ navigate }" to="/reset-password" custom>
-                <button type="button" class="btn btn-link" :aria-disabled="disabled"
-                  @click="navigate">
+              <a :href="oidcLoginPath" class="btn btn-primary" :class="{ disabled }" @click="loginByOIDC">
+                {{ $t('action.continue') }}
+                <spinner :state="disabled" />
+              </a>
+            </div>
+          </div>
+          <div v-else class="panel-body">
+            <form @submit.prevent="submit">
+              <form-group ref="email" v-model.trim="email" type="email" :placeholder="$t('field.email')" required
+                autocomplete="off" />
+              <form-group v-model="password" type="password" :placeholder="$t('field.password')" required
+                autocomplete="current-password" />
+              <div class="foot">
+                <button type="submit" class="btn" :aria-disabled="disabled">
+                  Login
+                  <spinner :state="disabled" />
+                </button>
+                <!-- <router-link v-slot="{ navigate }" to="/reset-password" custom>
+                <button type="button" class="btn btn-link" :aria-disabled="disabled" @click="navigate">
                   {{ $t('action.resetPassword') }}
                 </button>
-              </router-link>
+              </router-link> -->
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="right">
+          <div class="maskot-container">
+            <div class="text">
+              <p class="judul">PKL POLSTAT STIS</p>
+              <p class="label">T.A. 2023 / 2024</p>
             </div>
-          </form>
+            <img src="../../assets/images/maskot-full-2.png" id="maskot-login" alt="Logo">
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +63,7 @@ except according to the terms contained in the LICENSE file.
 </template>
 
 <script>
+import axios from 'axios';
 import FormGroup from '../form-group.vue';
 import Spinner from '../spinner.vue';
 
@@ -159,12 +171,30 @@ export default {
       if (url.origin !== window.location.origin || url.pathname === '/login')
         return internal('/');
 
-      if (url.pathname.startsWith(`${enketoBasePath}/`))
-        return external(url.href);
-      return internal(url.pathname + url.search + url.hash);
+      // if (url.pathname.startsWith(`${enketoBasePath}/`))
+      //   return external(url.href);
+      // return internal(url.pathname + url.search + url.hash);
+      return internal('/');
     },
     submit() {
       if (!this.verifyNewSession()) return;
+      const data = { email: this.email, password: this.password };
+      axios.post('https://central.pkl63.stis.ac.id/v1/sessions', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          this.responseData = response.data;
+          localStorage.setItem('token', this.responseData.token);
+          localStorage.setItem('csrf', this.responseData.csrf);
+          localStorage.setItem('expired', Date.parse(this.responseData.expiresAt).toString());
+          localStorage.setItem('email', this.email);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
       this.disabled = true;
       this.session.request({
         method: 'POST',
@@ -178,10 +208,6 @@ export default {
           this.navigateToNext(
             this.$route.query.next,
             (location) => {
-              // We only set this.disabled to `false` before redirecting within
-              // Frontend. If we also set this.disabled before redirecting
-              // outside Frontend, the buttons might be re-enabled before the
-              // external page is loaded.
               this.disabled = false;
               const message = this.$t('alert.changePassword');
               this.$router.replace(location)
@@ -191,7 +217,7 @@ export default {
                 });
             },
             (url) => {
-              window.location.replace(url);
+              window.location.replace('/');
             }
           );
         })
@@ -202,6 +228,103 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.test {
+  background: red !important;
+}
+
+.container-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.inner-container {
+  border-radius: .7rem !important;
+  background: #fff;
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header h1 {
+  padding-top: 1rem;
+}
+
+.right {
+  padding: 2rem 2rem;
+  border-radius: 0rem .7rem .7rem 0rem;
+  height: 100%;
+  background-image: linear-gradient(to bottom right, #03396C 30%, #6497b1 90%);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+#maskot-login {
+  height: 25rem;
+}
+
+.text p {
+  color: #fff;
+  margin-bottom: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-pkl {
+  padding-top: 1rem;
+  width: 5rem;
+}
+
+.right .judul {
+  font-weight: bolder;
+}
+
+.right .judul {
+  font-weight: 700;
+}
+
+
+.header h6 {
+  font-size: 1.3rem;
+}
+
+.foot {
+  display: flex;
+  justify-content: center;
+}
+
+.foot button {
+  width: 100% !important;
+  background-image: linear-gradient(to right, #fbac1b 25%, #f58020 80%);
+  color: #fff;
+  font-weight: 600;
+}
+
+.foot button:hover {
+  cursor: pointer;
+  opacity: .8;
+  background-image: linear-gradient(to right, #f58020 25%, #fbac1b 80%);
+}
+
+
+@media (min-width: 0px) and (max-width: 767px) {
+  .right {
+    display: none;
+  }
+}
+</style>
 
 <i18n lang="json5">
 {

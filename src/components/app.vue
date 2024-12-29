@@ -13,13 +13,13 @@ except according to the terms contained in the LICENSE file.
   <div>
     <!-- If the user's session is restored during the initial navigation, that
     will affect how the navbar is rendered. -->
-    <navbar v-show="routerReady"/>
-    <alert id="app-alert"/>
+    <navbar v-show="routerReady" />
+    <alert id="app-alert" />
     <!-- Specifying .capture so that an alert is not hidden immediately if it
     was shown after the click. -->
     <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
     <div class="container-fluid" @click.capture="hideAlertAfterClick">
-      <router-view/>
+      <router-view />
     </div>
     <div id="tooltips"></div>
   </div>
@@ -50,7 +50,11 @@ export default {
   },
   computed: {
     routerReady() {
-      return this.$route !== START_LOCATION;
+      if (this.$route.path == '/' || this.$route.path == '/login' || this.$route.path == '/logout' || /^\/projects\/[^/]+\/forms\/[^/]+\/submissions\/[^/]+$/.test(this.$route.path)) {
+        return false;
+      } else {
+        return this.$route !== START_LOCATION;
+      }
     }
   },
   created() {
